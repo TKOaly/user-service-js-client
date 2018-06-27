@@ -14,4 +14,11 @@ declare module "user-service-js-client" {
     baseURL?: string;
     timeout?: number;
   }
+
+  function authenticate(
+    username: string,
+    password: string,
+    serviceIdentifier: Service | string,
+    options?: ClientOptions
+  ): Promise<AuthenticationResult>;
 }
