@@ -1,0 +1,27 @@
+{
+  "name": "user-service-js-client",
+  "version": "1.0.0",
+  "description": "A Node.js module used to authenticate to TKO-äly's user service.",
+  "main": "dist/ndex.js",
+  "repository": "git@github.com:TKOaly/user-service-js-client.git",
+  "author": "TKO-äly ry",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bluebird": "^3.5.1"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/bluebird": "^3.5.21",
+    "@types/node": "^10.3.6",
+    "ts-node": "^7.0.0",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "build": "node_modules/.bin/tsc",
+    "run-dev": "node_modules/.bin/ts-node src/test.ts"
+  },
+  "typings": "lib/index.d.ts"
+}
