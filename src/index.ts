@@ -146,7 +146,8 @@ async function getMyData(
       baseURL: options && options.baseURL ? options.baseURL : user_service_url,
       timeout: options && options.timeout ? options.timeout : 2000,
       headers: {
-        Authorization: "Bearer " + token
+        Authorization: "Bearer " + token,
+        Service: serviceIdentifier
       }
     })
     .get(user_endpoint);
