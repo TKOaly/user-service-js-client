@@ -1,6 +1,7 @@
 import * as React from "react";
 import "./App.css";
 
+import userService, { AuthenticationModel, Service } from "user-service-js-client";
 import logo from "./logo.svg";
 
 interface AppState {
@@ -16,12 +17,15 @@ class App extends React.Component<{}, AppState> {
       token: ""
     };
   }
-  public componentDidMount() {
+  public async componentDidMount() {
     if (localStorage.getItem("tekis_auth_token")) {
       this.setState({
         token: localStorage.getItem("tekis_auth_token") || "",
         isAuthenticated: true
       });
+    } else {
+      const authModel: AuthenticationModel = await userService.authenticate("test_user", "test_user", Service.KJYR);
+      console.log(authModel);
     }
   }
   public render() {

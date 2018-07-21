@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-const user_service_url: string = "http://localhost:8080";
+const user_service_url: string = "https://users.tko-aly.fi";
 const auth_endpoint: string = "/api/auth/authenticate";
 const user_endpoint: string = "/api/users/me";
 
