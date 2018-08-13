@@ -111,36 +111,28 @@ async function authenticate(
   serviceIdentifier: Service | string,
   options?: ClientOptions
 ): Promise<AuthenticationModel> {
-  try {
-    const res: AxiosResponse<AuthenticationResult> = await axios
-      .create({
-        baseURL:
-          options && options.baseURL ? options.baseURL : user_service_url,
-        timeout: options && options.timeout ? options.timeout : 2000
-      })
-      .post(auth_endpoint, {
-        username,
-        password,
-        serviceIdentifier
-      });
+  const res: AxiosResponse<AuthenticationResult> = await axios
+    .create({
+      baseURL: options && options.baseURL ? options.baseURL : user_service_url,
+      timeout: options && options.timeout ? options.timeout : 2000
+    })
+    .post(auth_endpoint, {
+      username,
+      password,
+      serviceIdentifier
+    });
 
-    return {
-      token: res.data.payload.token,
-      success: true
-    } as AuthenticationModel;
-  } catch (err) {
-    throw {
-      success: false,
-      error: err.response
-    } as AuthenticationModel;
-  }
+  return {
+    token: res.data.payload.token,
+    success: true
+  } as AuthenticationModel;
 }
 
 async function getMyData(
   token: string,
   serviceIdentifier: Service | string,
   options?: ClientOptions
-) {
+): Promise<any> {
   const res: AxiosResponse<any> = await axios
     .create({
       baseURL: options && options.baseURL ? options.baseURL : user_service_url,
@@ -151,6 +143,7 @@ async function getMyData(
       }
     })
     .get(user_endpoint);
+  return res.data;
 }
 
 export default {

@@ -20,7 +20,7 @@ export interface AuthenticationModel {
     error?: string;
 }
 declare function authenticate(username: string, password: string, serviceIdentifier: Service | string, options?: ClientOptions): Promise<AuthenticationModel>;
-declare function getMyData(token: string, serviceIdentifier: Service | string, options?: ClientOptions): Promise<void>;
+declare function getMyData(token: string, serviceIdentifier: Service | string, options?: ClientOptions): Promise<any>;
 declare const _default: {
     authenticate: typeof authenticate;
     getMyData: typeof getMyData;
