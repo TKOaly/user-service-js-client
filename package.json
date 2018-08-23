@@ -1,19 +1,19 @@
 {
   "name": "@tkoaly/user-service-client",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "A library used to fetch user data from TKO-äly's user service.",
   "repository": "git@github.com:TKOaly/user-service-js-client.git",
   "author": "TKO-äly ry",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "0.18.0"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "ts-node": "^7.0.0",
-    "tslint": "^5.10.0",
-    "typescript": "^2.9.2"
+    "@types/axios": "0.14.0",
+    "ts-node": "7.0.0",
+    "tslint": "5.10.0",
+    "typescript": "2.9.2"
   },
   "scripts": {
     "build": "node_modules/.bin/tsc"

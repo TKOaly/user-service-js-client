@@ -1,11 +1,14 @@
+/**
+ *  TKO-äly User Service JavaScript client.
+ */
+
 import axios, { AxiosResponse } from "axios";
 
-const user_service_url: string = "https://users.tko-aly.fi";
-const auth_endpoint: string = "/api/auth/authenticate";
+export const USER_SERVICE_URL: string = "https://users.tko-aly.fi";
 const user_endpoint: string = "/api/users/me";
 
 /**
- * Service enums.
+ * Service enums to help the user find the correct service.
  *
  * @export
  * @enum {number}
@@ -16,49 +19,110 @@ export enum Service {
 }
 
 /**
- * Authentication result interface.
+ * User object.
  *
  * @export
- * @interface AuthenticationResult
+ * @interface UserObject
  */
-export interface AuthenticationResult {
+export interface UserObject {
   /**
-   * True if the request succeeds.
+   * User id
+   *
+   * @type {number}
+   * @memberof UserObject
+   */
+  id?: number;
+  /**
+   * Username
+   *
+   * @type {string}
+   * @memberof UserObject
+   */
+  username?: string;
+  /**
+   * Name
+   *
+   * @type {string}
+   * @memberof UserObject
+   */
+  name?: string;
+  /**
+   * Screen name
+   *
+   * @type {string}
+   * @memberof UserObject
+   */
+  screenName?: string;
+  /**
+   * Email
+   *
+   * @type {string}
+   * @memberof UserObject
+   */
+  email?: string;
+  /**
+   * Residence
+   *
+   * @type {string}
+   * @memberof UserObject
+   */
+  residence?: string;
+  /**
+   * Phone
+   *
+   * @type {string}
+   * @memberof UserObject
+   */
+  phone?: string;
+  /**
+   * Is the user a HYY member or not
    *
    * @type {boolean}
-   * @memberof AuthenticationResult
+   * @memberof UserObject
    */
-  ok?: boolean;
+  isHYYMember?: boolean;
   /**
-   * Response message.
+   * Membership status
    *
    * @type {string}
-   * @memberof AuthenticationResult
+   * @memberof UserObject
    */
-  message?: string;
+  membership?: string;
   /**
-   * Token payload.
-   *
-   * @type {TokenPayload}
-   * @memberof AuthenticationResult
-   */
-  payload: TokenPayload;
-}
-
-/**
- * Token payload.
- *
- * @export
- * @interface TokenPayload
- */
-export interface TokenPayload {
-  /**
-   * JWT.
+   * Role
    *
    * @type {string}
-   * @memberof TokenPayload
+   * @memberof UserObject
    */
-  token?: string;
+  role?: string;
+  /**
+   * Date when the user was created at.
+   *
+   * @type {Date}
+   * @memberof UserObject
+   */
+  createdAt?: Date;
+  /**
+   * Date when the user was last modified.
+   *
+   * @type {Date}
+   * @memberof UserObject
+   */
+  modifiedAt?: Date;
+  /**
+   * Is the user a TKTL member or not.
+   *
+   * @type {boolean}
+   * @memberof UserObject
+   */
+  isTKTL?: boolean;
+  /**
+   * Is the user deleted or not.
+   *
+   * @type {boolean}
+   * @memberof UserObject
+   */
+  isDeleted?: boolean;
 }
 
 /**
@@ -85,57 +149,52 @@ export interface ClientOptions {
 }
 
 /**
- * Authentication model.
+ * Generic service response.
  *
  * @export
- * @interface AuthenticationModel
+ * @interface ServiceResponse
+ * @template T
  */
-export interface AuthenticationModel {
-  token?: string;
-  success: boolean;
-  error?: string;
+export interface ServiceResponse<T> {
+  /**
+   * Payload
+   *
+   * @type {T}
+   * @memberof ServiceResponse
+   */
+  payload?: T;
+  /**
+   * Message
+   *
+   * @type {string}
+   * @memberof ServiceResponse
+   */
+  message: string;
+  /**
+   * Request status
+   *
+   * @type {(boolean | null)}
+   * @memberof ServiceResponse
+   */
+  ok: boolean | null;
 }
 
 /**
- * Authenticates the user.
+ * Returns user data.
  *
- * @param {string} username Username
- * @param {string} password Password
- * @param {(Service | string)} serviceIdentifier Service idenfitier
- * @param {ClientOptions} [options] Request options
- * @returns {Promise<AuthenticationModel>} Authentication model
+ * @param {string} token User service token
+ * @param {(Service | string)} serviceIdentifier Service identifier
+ * @param {ClientOptions} [options] Client options
+ * @returns {Promise<ServiceResponse<User>>} Service response.
  */
-async function authenticate(
-  username: string,
-  password: string,
-  serviceIdentifier: Service | string,
-  options?: ClientOptions
-): Promise<AuthenticationModel> {
-  const res: AxiosResponse<AuthenticationResult> = await axios
-    .create({
-      baseURL: options && options.baseURL ? options.baseURL : user_service_url,
-      timeout: options && options.timeout ? options.timeout : 2000
-    })
-    .post(auth_endpoint, {
-      username,
-      password,
-      serviceIdentifier
-    });
-
-  return {
-    token: res.data.payload.token,
-    success: true
-  } as AuthenticationModel;
-}
-
 async function getMyData(
   token: string,
   serviceIdentifier: Service | string,
   options?: ClientOptions
-): Promise<any> {
-  const res: AxiosResponse<any> = await axios
+): Promise<ServiceResponse<UserObject>> {
+  const res: AxiosResponse<ServiceResponse<UserObject>> = await axios
     .create({
-      baseURL: options && options.baseURL ? options.baseURL : user_service_url,
+      baseURL: options && options.baseURL ? options.baseURL : USER_SERVICE_URL,
       timeout: options && options.timeout ? options.timeout : 2000,
       headers: {
         Authorization: "Bearer " + token,
@@ -147,6 +206,5 @@ async function getMyData(
 }
 
 export default {
-  authenticate,
   getMyData
 };

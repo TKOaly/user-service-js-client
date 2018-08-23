@@ -1,7 +1,7 @@
 import * as React from "react";
 import "./App.css";
 
-import userService, { Service } from "@tkoaly/user-service-client";
+import userService, { Service, ServiceResponse, UserObject } from "@tkoaly/user-service-client";
 
 interface AppState {
   token: string;
@@ -43,16 +43,16 @@ class App extends React.Component<{}, AppState> {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-    this.setState({ error: "" });
+    this.setState({ error: "", returnedData: "" });
     try {
-      const res = await userService.getMyData(
+      const res: ServiceResponse<UserObject> = await userService.getMyData(
         this.state.token,
         this.state.service,
         {
           baseURL: this.state.backendUrl
         }
       );
-      this.setState({ returnedData: res });
+      this.setState({ returnedData: JSON.stringify(res, null, 2) });
     } catch (err) {
       console.log(err);
       if (err.response && err.response.data) {
@@ -112,7 +112,7 @@ class App extends React.Component<{}, AppState> {
                 {this.state.error}
               </p>
             )}
-            <p>{JSON.stringify(this.state.returnedData, null, 2)}</p>
+            <p>{this.state.returnedData}</p>
           </pre>
         </form>
       </div>
